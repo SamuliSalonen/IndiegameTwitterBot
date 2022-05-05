@@ -34,9 +34,11 @@ const retweet = (id) => {
     T.post("statuses/retweet/:id", {
         id: id.toString()
     }, (e, d, r) => {
+        console.log(d);
         console.log(e);
         //console.log("here!!");
 
+        console.log("############################################################################");
     });
 }
 
@@ -47,22 +49,27 @@ const run = () => {
             //retweet_count
             //favorite_count
 
+            for (let i = 0; i < data.statuses.length; i++) {
+                const tweet = data.statuses[i];
 
-            const tweet = data.statuses[0];
-            if (!tweet.favorited) {
+                // const tweet = data.statuses[0];
+                //if (!tweet.favorited) {
 
-                const id = tweet.id_str;
-                retweet(id);
-                // T.tweet();
+                if (!tweet.retweeted && !tweet.retweeted_status) {
+                    console.log("############################################################################");
+                    console.log(tweet);
+                    const id = tweet.id_str;
+                    retweet(id);
+                    // T.tweet();
+                    break;
+                }
             }
-            console.log(data);
-            // This is where the magic will happen
         } else {
             console.log(err);
         }
     })
 }
-
+run();
 const minutes = 2, the_interval = minutes * 60 * 1000;
 setInterval(function () {
     console.log("running");
